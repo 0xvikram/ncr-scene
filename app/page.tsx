@@ -134,13 +134,13 @@ export default function Home() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-32 bg-gradient-to-b from-[var(--color-neon-cyan)]/10 to-transparent blur-3xl pointer-events-none"></div>
 
         {/* Giant Hollow Text Marquee Background */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full overflow-hidden pointer-events-none select-none flex z-0 mix-blend-overlay">
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full overflow-hidden pointer-events-none select-none flex z-0 opacity-20">
           <div className="animate-marquee-giant whitespace-nowrap flex text-[12rem] md:text-[20rem] font-black italic tracking-tighter">
             {[...Array(10)].map((_, i) => (
               <span 
                 key={i} 
                 className="mr-12 md:mr-24 text-transparent" 
-                style={{ WebkitTextStroke: "2px rgba(255,255,255,0.15)" }}
+                style={{ WebkitTextStroke: `3px ${i % 2 === 0 ? 'var(--color-neon-cyan)' : 'var(--color-neon-pink)'}` }}
               >
                 NCR SCENE
               </span>
@@ -171,8 +171,8 @@ export default function Home() {
                   key={i} 
                   className="w-1.5 bg-gradient-to-t from-[var(--color-neon-cyan)] to-[var(--color-neon-pink)] rounded-t-sm"
                   style={{
-                    height: `${Math.max(20, Math.random() * 100)}%`,
-                    animation: `eq ${0.5 + Math.random()}s ease-in-out infinite alternate delay-${i % 5}`
+                    height: `${20 + ((i * 37) % 80)}%`,
+                    animation: `eq ${0.5 + ((i * 13) % 10) / 10}s ease-in-out infinite alternate delay-${i % 5}`
                   }}
                 ></div>
               ))}

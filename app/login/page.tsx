@@ -14,10 +14,10 @@ export default function Login() {
             <h1 className="text-3xl font-black mb-2 text-white">ENTER THE SCENE</h1>
             <p className="text-gray-400 mb-8 font-medium">Log in to RSVP, upvote fests, and join the hype.</p>
             
-            <button className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:border-white/30">
+            <a href="/api/auth/google" className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:border-white/30">
               <img src="https://authjs.dev/img/providers/google.svg" alt="Google" className="w-6 h-6" />
               Continue with Google
-            </button>
+            </a>
             
             <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
               <div className="h-px bg-white/10 flex-1"></div>
