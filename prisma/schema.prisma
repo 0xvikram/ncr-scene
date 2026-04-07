@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EventCategory {
+  FREE @map("free")
+  PAID @map("paid")
+
+  @@map("event_category")
+}
+
+enum VoteType {
+  UP   @map("up")
+  DOWN @map("down")
+
+  @@map("vote_type")
+}
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email     String   @unique
+  name      String?
+  avatarUrl String?  @map("avatar_url")
+  googleSub String?  @unique @map("google_sub")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  comments      Comment[]
+  events        Event[]        @relation("PostedEvents")
+  registrations Registration[]
+  votes         Vote[]
+
+  @@map("users")
+}
+
+model Event {
+  id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title            String
+  description      String
+  category         EventCategory
+  price            Decimal?      @db.Decimal(10, 2)
+  collegeName      String        @map("college_name")
+  venue            String
+  city             String        @default("Delhi NCR")
+  startDate        DateTime      @map("start_date") @db.Timestamptz(6)
+  endDate          DateTime?     @map("end_date") @db.Timestamptz(6)
+  registrationLink String?       @map("registration_link")
+  posterUrl        String?       @map("poster_url")
+  tags             String[]      @default([])
+  upvotes          Int           @default(0)
+  downvotes        Int           @default(0)
+  isApproved       Boolean       @default(false) @map("is_approved")
+  postedById       String        @map("posted_by") @db.Uuid
+  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  comments      Comment[]
+  postedBy      User           @relation("PostedEvents", fields: [postedById], references: [id], onDelete: Cascade)
+  registrations Registration[]
+  votes         Vote[]
+
+  @@index([postedById])
+  @@index([category, startDate])
+  @@index([isApproved, startDate])
+  @@index([createdAt])
+  @@map("events")
+}
+
+model Registration {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId      String   @map("event_id") @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  registeredAt DateTime @default(now()) @map("registered_at") @db.Timestamptz(6)
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@map("registrations")
+}
+
+model Comment {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId         String    @map("event_id") @db.Uuid
+  userId          String    @map("user_id") @db.Uuid
+  parentCommentId String?   @map("parent_comment_id") @db.Uuid
+  content         String
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  event   Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  parent  Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies Comment[] @relation("CommentReplies")
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, createdAt])
+  @@index([parentCommentId])
+  @@index([userId])
+  @@map("comments")
+}
+
+model Vote {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId   String   @map("event_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  voteType  VoteType @map("vote_type")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@map("votes")
+}

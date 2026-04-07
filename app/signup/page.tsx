@@ -2,7 +2,7 @@ import Navbar from "@/components/ui/Navbar";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
 
-export default function Login() {
+export default function SignUp() {
   return (
     <main className="min-h-screen bg-[#050505] text-white flex flex-col font-sans selection:bg-white selection:text-black">
       <Navbar />
@@ -10,8 +10,8 @@ export default function Login() {
         <div className="w-full max-w-sm">
           {/* Minimalist Header */}
           <div className="mb-10 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight mb-2">Welcome back</h1>
-            <p className="text-sm text-[#888]">Enter your details to access your account.</p>
+            <h1 className="text-2xl font-semibold tracking-tight mb-2">Create an account</h1>
+            <p className="text-sm text-[#888]">Join the scene and start discovering fests.</p>
           </div>
           
           <div className="space-y-4">
@@ -21,7 +21,7 @@ export default function Login() {
               className="w-full h-12 bg-white text-black rounded-xl font-medium text-sm flex items-center justify-center gap-3 transition-all hover:bg-gray-200 active:scale-[0.98]"
             >
               <img src="https://authjs.dev/img/providers/google.svg" alt="Google" className="w-5 h-5" />
-              Continue with Google
+              Sign up with Google
             </a>
 
             <div className="relative py-4 flex items-center">
@@ -32,26 +32,36 @@ export default function Login() {
 
             {/* Email Form (Static Placeholder for Aesthetic) */}
             <div className="space-y-3">
-              <div>
+              <div className="grid grid-cols-2 gap-3">
                 <input 
-                  type="email" 
-                  placeholder="Email address" 
+                  type="text" 
+                  placeholder="First name" 
+                  className="w-full h-12 bg-[#0a0a0a] border border-[#222] rounded-xl px-4 text-sm focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all placeholder:text-[#555] text-white"
+                />
+                <input 
+                  type="text" 
+                  placeholder="Last name" 
                   className="w-full h-12 bg-[#0a0a0a] border border-[#222] rounded-xl px-4 text-sm focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all placeholder:text-[#555] text-white"
                 />
               </div>
+              <input 
+                type="email" 
+                placeholder="Email address" 
+                className="w-full h-12 bg-[#0a0a0a] border border-[#222] rounded-xl px-4 text-sm focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all placeholder:text-[#555] text-white"
+              />
               <button 
                 className="w-full h-12 bg-[#111] hover:bg-[#1a1a1a] text-white border border-[#222] rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
               >
-                Continue with Email
+                Create Account
                 <MoveRight className="w-4 h-4 ml-1 opacity-50" />
               </button>
             </div>
           </div>
 
           <p className="mt-8 text-center text-xs text-[#666]">
-            Don't have an account?{" "}
-            <Link href="/signup" className="text-white hover:underline underline-offset-4 transition-all">
-              Sign up
+            Already have an account?{" "}
+            <Link href="/login" className="text-white hover:underline underline-offset-4 transition-all">
+              Log in
             </Link>
           </p>
         </div>
